@@ -1,0 +1,997 @@
+
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+    <title>BP Algorithm :: Suspected Acute Pancreatitis</title>
+
+<!-- Google fonts -->
+<link href='https://fonts.googleapis.com/css?family=Oswald:300,400' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700' rel='stylesheet' type='text/css'>
+
+<!-- D3.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
+
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	
+<!-- Bootstrap -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+<!-- Fontawesome -->
+<link media="all" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" />
+	
+<!-- Combobox script for the search box
+<script src="js/bootstrap-combobox.js"></script>
+<link href="css/bootstrap-combobox.css" rel="stylesheet"> -->
+
+<!-- Stylesheet -->
+<link rel="stylesheet" href="css/style.css">
+<!-- Script -->
+<!-- <script src="js/script.js"></script> -->
+       
+</head>
+<body>
+	<div id="cont" class="container-fluid">
+		
+		<div class="row text-center" style="margin-top: -20px;background-color: #2a6ebb;padding-top: 30px;">
+			<div class="col-sm-4">
+				<div id="topTitle" class="title">Suspected Acute Pancreatitis</div>
+				<div id="subTitle">The diagnosis of pancreatitis is always one of exclusion, so it must be included with any complaint of severe abdominal pain.</div>
+        <div id="topText">History and examination can be indicative of acute pancreatitis; however, 2 out of the following 3 criteria must be met for its diagnosis: <a href="#">[37]</a>
+          <ul>
+            <li>Clinical story (upper abdominal pain)</li>
+            <li>Elevated serum amylase or lipase (>3 upper limit of normal)</li>
+            <li>Imaging study (CT, MRI, ultrasound) consistent with acute pancreatitis.</li>
+          </ul>
+				</div>
+				
+				<hr>
+								  
+				<div id="searchTitle" class="title">Quick Find: Considerations</div>
+				<div class="form-group">			
+					<select id="searchBox" class="combobox input-large form-control" style="display: none;" onchange="searchEvent(this.value)">
+						 <option value="" selected="selected">Search...</option>
+          </select>
+          <div id="searchText"><a href="https://codepen.io/marmaliser/pen/dKZaKJ">Example of search / node highlight</a></div>
+				</div>
+				
+				<div class="row text-center" style=	"margin-top: 30px;">
+					<div class="col-sm-6">
+						<div id="legendTitle">More Info</div>
+						<div id="legendText">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, 
+              totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+						</div>
+					</div>
+					<!-- <div id="legendRowWrapper" class="col-sm-6">
+						<div id="legendTitle" style="text-align: center;">Number of employed persons</div>
+						<div class="legendSubTitle">in thousands</div>
+						<div id="legendCircles"></div>
+          </div> -->
+          <div class="col-sm-6">
+              <div id="legendTitle">Pitfalls</div>
+              <div id="legendText">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, 
+                  totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+                </div>
+            </div>
+        </div>
+        
+        <div class="row text-center" style=	"margin-top: 30px;">
+          <div class="col-sm-12">
+            <div id="legendTitle">Hover Notes</div>
+            <div id="legendText">When we hover on a 'pitfall' or 'more info', the additional content can be displayed here. Here is a <a href="http://jonathansoma.com/demos/hover-notes-0e90eae143453e5514647641af7ffa1e.html"> very simple example</a>.
+              
+            </div>
+          </div>
+        </div>
+
+        <div class="row text-center" style=	"margin-top: 30px;">
+            <div class="col-sm-12">
+              <div id="legendTitle">My notes / Other posibilities</div>
+              <div id="legendText">
+                <ul>
+                  <li><a href="https://codepen.io/marmaliser/pen/dKZaKJ">Search and Highlight path</a> </li>
+                  <li><a href="http://bl.ocks.org/pprett/3813537">Select from multiple conditions</a> </li>
+                  <li><a href="http://jsfiddle.net/marmaliser31/bos0rgzu/">Expand All / Collapse All</a></li>
+                  <li><a href="https://codepen.io/marmaliser/pen/PaOVBx">Node types</a></li>
+                  <li><a href="http://blog.zubasoft.at/Examples/D3.js/OrgChart/index.htm">Brackets or Curves?</a></li>
+                  <li><a href="">Arrowheads (Line 911)</a></li>
+                  <li><a href="http://jonathansoma.com/demos/hover-notes-0e90eae143453e5514647641af7ffa1e.html">Show on hover as hover notes</a></li>
+                  <li><a href="https://codepen.io/marmaliser/pen/BVmMqb">Show on hover as tooltips</a></li>
+                </ul>
+                
+              </div>
+
+              <div id="legendTitle">To Do / Further requirements </div>
+              <div id="legendText">
+                <ul>
+                  <li><a href="#">Address bounding issue (keep on canvas)</a> </li>
+                  <li><a href="#">Implement Hover notes</a> </li>
+                  <li><a href="#">Decide on color palette for nodes &amp; paths (+ / -) to illustrate hierarchy</a> </li>
+                  <li><a href="#">Implement Expand All / Collapse All</a></li>
+                  <li><a href="#">Build responsive / mobile behaviour</a> </li>
+                  <li><a href="#">Add SVG ForeighObrect where necessary</a> </li>
+                </ul>
+                
+              </div>
+            </div>
+          </div>
+				
+			</div>
+			<div class="col-sm-8">
+            <script> 
+            
+            //
+                function mouseover(d) {
+                    d3.select(this).select("rect.rect-children-2").classed("hover", true);
+                    d3.select(this).select("rect.rect-children").classed("hover", true);
+                    d3.select(this).select("rect.rect-text").classed("hover", true);
+                }
+        
+                // Toggle children on click.
+                function mouseout(d) {
+                    //d3.select(this).select("text.hover").remove();
+                    d3.select(this).select("rect.rect-children-2").classed("hover", false);
+                    d3.select(this).select("rect.rect-children").classed("hover", false);
+                    d3.select(this).select("rect.rect-text").classed("hover", false);
+                }
+        
+                function collapse(d) {
+                    if (d.children) {
+                        d._children = d.children;
+                        d._children.forEach(collapse);
+                        d.children = null;
+                    }
+                }
+        
+                function toggleAll(d) {
+                    if (d.children) {
+                        d.children.forEach(toggleAll);
+                        toggle(d);
+                    }
+                }
+        
+                function updateEvents() {
+                    $(".node a").on("click", function (e) {
+                        window.location = $(this).attr('href');
+                        //e.preventDefault();
+                        e.stopPropagation();
+                        //console.log("link");
+                    });
+              }
+      
+                function getDepth(obj) {
+                    var depth = 0;
+                    if (obj.children) {
+                        obj.children.forEach(function (d) {
+                            var tmpDepth = getDepth(d)
+                            if (tmpDepth > depth) {
+                                depth = tmpDepth
+                            }
+                        })
+                    }
+                    return 1 + depth
+                }
+                
+                // This is for the text wrapping in nodes & labels
+                function wrap(text, width) {
+                    text.each(function () {
+                        var text = d3.select(this),
+                            words = text.text().split(/\s+/).reverse(),
+                            word,
+                            line = [],
+                            lineNumber = 0,
+                            lineHeight = 1.2, // ems
+                            x = text.attr("x"),
+                            y = text.attr("y"),
+                            dy = text.attr("dy") ? text.attr("dy") : 0;
+        
+                        tspan = text.text(null).append("tspan").attr("x", x).attr("y", y).attr("dy", dy + "em");
+                        while (word = words.pop()) {
+                            line.push(word);
+                            tspan.text(line.join(" "));
+                            var centradox = x + (width - tspan.node().getComputedTextLength()) / 2;
+        
+                            if (tspan.node().getComputedTextLength() > width) {
+                                line.pop();
+                                tspan.text(line.join(" "));
+                                line = [word];
+                                tspan = text.append("tspan").attr("x", x).attr("y", y).attr("dy", ++lineNumber *
+                                    lineHeight + dy + "em").text(word);
+                            }
+                        }
+                    });
+                }
+      
+              var _queryTreeSort = function (options) {
+                  var cfi, e, i, id, o, pid, rfi, ri, thisid, _i, _j, _len, _len1, _ref, _ref1;
+                  id = options.id || "id";
+                  pid = options.parentid || "parentid";
+                  ri = [];
+                  rfi = {};
+                  cfi = {};
+                  o = [];
+                  _ref = options.q;
+                  for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
+                      e = _ref[i];
+                      rfi[e[id]] = i;
+                      if (cfi[e[pid]] == null) {
+                          cfi[e[pid]] = [];
+                      }
+                      cfi[e[pid]].push(options.q[i][id]);
+                  }
+                  _ref1 = options.q;
+                  for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+                      e = _ref1[_j];
+                      if (rfi[e[pid]] == null) {
+                          ri.push(e[id]);
+                      }
+                  }
+                  while (ri.length) {
+                      thisid = ri.splice(0, 1);
+                      o.push(options.q[rfi[thisid]]);
+                      if (cfi[thisid] != null) {
+                          ri = cfi[thisid].concat(ri);
+                      }
+                  }
+                  return o;
+              };
+      
+              var _makeTree = function (options) {
+                  var children, e, id, o, pid, temp, _i, _len, _ref;
+                  id = options.id || "id";
+                  pid = options.parentid || "parentid";
+                  children = options.children || "children";
+                  temp = {};
+                  o = [];
+                  _ref = options.q;
+                  for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                      e = _ref[_i];
+                      e[children] = [];
+                      temp[e[id]] = e;
+                      if (temp[e[pid]] != null) {
+                          temp[e[pid]][children].push(e);
+                      } else {
+                          o.push(e);
+                      }
+                  }
+                  return o;
+              };
+      
+              var _renderTree = function (tree) {
+                  var e, html, _i, _len;
+                  html = "<ul class='sections'>";
+                  for (_i = 0, _len = tree.length; _i < _len; _i++) {
+                      e = tree[_i];
+                      html += "<li class='department'><a href=''><span>" + e.name + "</span></a>";
+                      if (e.children != null) {
+                          html += _renderTree(e.children);
+                      }
+                      html += "</li>";
+                  }
+                  html += "</ul>";
+                  return html;
+              };
+      
+              $(document).ready(function () {
+      
+                //   var id_parent = getParameterByName('parent_id_chart');
+                //   if (id_parent == '') {
+                //       id_parent = 1;
+                //   }
+                  var orgJSON = [{
+                      "id": "1",
+                      "parentid": "20",
+                      "name": "ACUTE PANCREATITIS (Suspected)",
+                      "path": "",
+                      "label": ""
+                  }, {
+                      "id": "2",
+                      "parentid": "1",
+                      "name": "Serum amylase or lipase (>3 ULN)?",
+                      "path": "100,20,1",
+                      "label": ""
+                  }, 
+                  {
+                      "id": "688",
+                      "parentid": "1",
+                      "name": "Urgent assessment of haemodynamic status for signs of organ failure",
+                      "path": "100,20,1",
+                      "label": " "
+                  }, {
+                      "id": "9",
+                      "parentid": "2",
+                      "name": "(NO Path) Consider alternative diagnosis [+ pitfall B]",
+                      "path": "100,20,1,13477",
+                      "label": "NO [+ pitfall] B"
+                  }, {
+                      "id": "7674",
+                      "parentid": "2",
+                      "name": "(YES Path) Acute Pancreatitis confirmed [+ pitfall A]",
+                      "path": "100,20,1,13477",
+                      "label": "YES [+ pitfall] A"
+                  }, {
+                      "id": "7665",
+                      "parentid": "7674",
+                      "name": "Risk stratify using: SIRS criteria met; Awareness of risk factors",
+                      "path": "100,20,1,13477,166",
+                      "label": ""
+                  }, {
+                      "id": "7668",
+                      "parentid": "7674",
+                      "name": "Order transabdominal ultrasound to check for biliary aetiology ...",
+                      "path": "100,20,1,13477,166",
+                      "label": "Investigations to establish aetiology"
+                  }, {
+                      "id": "7885",
+                      "parentid": "7665",
+                      "name": "Immediate transfer to ITU if signs of organ failure. Consider ITU transfer if .....",
+                      "path": "100,20,1,13477,166",
+                      "label": "High risk of developing severe disease"
+                  }, {
+                      "id": "7886",
+                      "parentid": "7665",
+                      "name": "Continue supportive care",
+                      "path": "100,20,1,13477,166",
+                      "label": "Low risk of developing severe disease"
+                  }, {
+                      "id": "19",
+                      "parentid": "9",
+                      "name": "Ongoing suspicion of Acute Pancreatitis",
+                      "path": "100,20,1,13477,9",
+                      "label": ""
+                  }, {
+                      "id": "10237",
+                      "parentid": "19",
+                      "name": "Order CECT (or MRCP if CECT contraindicated)",
+                      "path": "100,20,1,13477,9,19",
+                      "label": ""
+                  }, {
+                      "id": "102307",
+                      "parentid": "10237",
+                      "name": "Imaging findings characteristic of Acute Pancreatitis",
+                      "path": "100,20,1,13477,9,19",
+                      "label": ""
+                  }, {
+                      "id": "3181",
+                      "parentid": "688",
+                      "name": "Child of Urgent Assessment ...",
+                      "path": "100,20,1,688",
+                      "label": ""
+                  }, {
+                      "id": "7338",
+                      "parentid": "3181",
+                      "name": "Grandson of Urgent Assessment ...",
+                      "path": "100,20,1,688,3181",
+                      "label": ""
+                  }, {
+                      "id": "7334",
+                      "parentid": "3181",
+                      "name": "Granddaughter of Urgent Assessment ...",
+                      "path": "100,20,1,688,3181",
+                      "label": ""
+                  }];
+      
+                  var nodeIndex = 0;
+      
+                  result = _queryTreeSort({
+                      q: orgJSON
+                  });
+                  //    $('#tree_result').html(JSON.stringify(sqlquery, true, 2));
+      
+                  var treeBD;
+                  treeBD = _makeTree({
+                      q: result
+                  });
+      
+                  var html_tree = _renderTree(treeBD);
+                  //    $('#tree_ordenado').html(JSON.stringify(treeBD, true, 2));
+      
+                  var margin = {
+                          top: 20,
+                          right: 200,
+                          bottom: 20,
+                          left: 200
+                      },
+                      width = $(".bp-alg.cf").width() - margin.right - margin.left,
+                      height = 1200 - margin.top - margin.bottom;
+      
+                  var i = 0,
+                      duration = 750,
+                      root;
+      
+                  var tree = d3.layout.tree() // Changed by MOC to avoid overlaps
+                      .size([width, height])
+                      //.nodeSize([175])
+                      .separation(function separation(a, b) {
+                          return (a.parent == b.parent ? 1 : 2) * a.depth;
+                      }); 
+                      // //.size([width, height])
+                      // .nodeSize([175])
+                      // .separation(function separation(a, b) {
+                      //     return (a.parent == b.parent ? 1 : 2);
+                      // });
+      
+                  var diagonal = d3.svg.diagonal()
+                      .projection(function (d) {
+                          return [d.x, d.y];
+                      });
+      
+                  var svg = d3.select(".bp-alg").append("svg")
+                      .attr("width", width + margin.right + margin.left)
+                      .attr("height", height + margin.top + margin.bottom)
+                      //.attr("viewbox", "0 0 500 500")
+                      .call(zm = d3.behavior.zoom().scaleExtent([0.5, 3]).on("zoom", redraw))
+                      .append("g")
+                      .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+                      .attr("width", width + margin.right + margin.left)
+                      .attr("height", height + margin.top + margin.bottom)
+                      .style("text-rendering", "optimizeLegibility")
+                      .style("shape-rendering", "default");
+      
+                  var slider = d3.select(".sliderZoom").append("p").append("input")
+                      .datum({})
+                      .attr("type", "range")
+                      .attr("value", 1)
+                      .attr("min", zm.scaleExtent()[0])
+                      .attr("max", zm.scaleExtent()[1])
+                      .attr("step", (zm.scaleExtent()[1] - zm.scaleExtent()[0]) / 100)
+                      .on("input", slided);
+      
+                  function slided(d) {
+                      zm.scale(d3.select(this).property("value"))
+                          .event(svg);
+                  }
+      
+                  zm.translate([margin.left, margin.top]);
+                  var flare = treeBD[0];
+      
+                  root = flare;
+                  root.x0 = width / 2;
+                  root.y0 = 0;
+      
+                  var num_node = 0;
+                  /*
+      
+                      function getIndiceHijo(node){
+                        var padre=
+                      }*/
+      
+                  function update(source) {
+      
+                      svg.append("svg:defs").selectAll("marker")
+                              .data(["end"])      // Different link/path types can be defined here
+                          .enter().append("svg:marker")    // This section adds in the arrows
+                              .attr("id", String)
+                              .attr("viewBox", "0 -5 10 10")
+                              .attr("refX", 18)
+                              .attr("refY", 0)
+                              .attr("markerWidth", 10)
+                              .attr("markerHeight", 10)
+                              .attr("orient", "auto")
+                          .append("svg:path")
+                              .attr("d", "M0,-5L10,0L0,5");
+      
+                      // Compute the new tree layout.
+                      
+                      var nodes = tree.nodes(root).reverse(),
+                          links = tree.links(nodes);
+      
+                      // ******************************************************//
+                      
+                      // Normalize for fixed-depth.
+                      var currentTree = getDepth(root);
+                      
+                      //var childrenPares = (source._children != null) ? 1 - (source._children.length % 2) : 0;
+                      //var numerochildren = 0;
+                      var currentDepth = source.depth;
+                      // Normalize for fixed-depth.
+                      var indice = 0;
+                      var levels = [];
+      
+                      for (n = 0; n < currentTree; n++) {
+                          levels[n] = 0;
+                      }
+      
+                      nodes.forEach(function (d, i) {
+                          //var index = d3.select(this).indexOf(d3.select(this.parentNode).datum());
+                          //var childrenPares=(d._children != null) ? (1-d._children.length) % 2 : 0;
+                          //console.log("update");
+      
+                          /* indice=i-numerochildren;
+                           if (d.depth > currentDepth) {
+                             numerochildren=(d._children != null) ? d._children.length  : 0;
+                           }*/
+      
+                          levels[d.depth] = levels[d.depth] + 1;
+                          indice = levels[d.depth];
+                          //console.log(d.name+":"+d.depth+":"+i+":"+indice);
+                          if (d.depth > 1) {
+                              d.y = d.depth * 200;
+                              if (d.parent.children.length > 2) {
+                                  d.y += (indice % 2) * 75;
+                              }
+      
+                          } else if (d.depth == 1) { //primer nivel, menos separación
+                              d.y = d.depth * 100;
+                              if (d.parent.children.length > 2) {
+                                  d.y += (indice % 2) * 75;
+                              }
+                          } else {
+                              d.y = 0;
+                          }
+      
+                      });
+      
+                      // Update the nodes…
+                      var node = svg.selectAll("g.node")
+                          .data(nodes, function (d, i) {
+                              return d.id || (d.id = ++i);
+                          });
+      
+                      // Enter any new nodes at the parent's previous position.
+      
+                      var nodeEnter = node.enter();
+                      var groupNode = nodeEnter.append("g")
+                          .attr("class", "node")
+                          .attr("id", function (d) {
+                              return d.id
+                          })
+                          .attr("transform", function (d, i) {
+                              return "translate(" + source.x0 + "," + source.y0 + ")";
+                          })
+                          .on("mouseover", mouseover)
+                          .on("mouseout", mouseout)
+                      //.call(drag);
+                      ;
+      
+                      var groupText = groupNode.append("g")
+                          .attr("class", "texto");
+      
+                      groupText.append("circle")
+                          //.attr("r", 1e-6)
+                          .on("click", click)
+                          .style("fill", function(d) {
+                              if (d.id == "1") {return "red"}
+                              else 	{ return "black" }
+                          ;})
+      
+                      /*          var cuadroTexto = groupText.append('foreignObject');
+                                cuadroTexto.attr('dx', function(d) { return 2*d.name.length} )
+                                      .attr('y', function(d) { return d.children || d._children ? 0 : 100; })
+                                      .on("click", click)
+                                      .html(function(d,i) { 
+                                    var cuadronodelinks = '<div class="box-node-links"><div class="links-node">'
+                                    +'<a title="Ver en directorio" href="/directorio?id='+d.id+'"><i class="fa fa-list-alt"></i></a>'
+                                    +'<a title="Ver Organigrama" href="<?php echo $_SERVER['REQUEST_URI']; ?>&parent_id_chart='+d.id+'"><i class="fa fa-sitemap"></i></a>'
+                                    +'</div></div>';
+                        
+                                    var cuadronode = '<div class="box-node-text">'
+                                    +cuadronodelinks
+                                    +'<div class="text-node">'
+                                    +d.name
+                                    +'</div></div>'; 
+                                        return cuadronode;
+                                    });*/
+      
+                      // if you have children
+      
+                      groupText.append('rect')
+                          .on("click", click)
+                          .attr("x", "-75px")
+                          .attr("y", "20")
+                          .attr("rx", 4)
+                          .attr("ry", 4)
+                          .attr("width", 150)
+                          .attr("height", 50)
+                          .attr("fill", "#fff")
+                          .attr("class", "rect-children")
+                          
+                          .style("stroke", "#777")
+                          .style("stroke-width", function (d) {
+                              var children = 0;
+                              if (d._children != null) {
+                                  children = d._children.length;
+                              }
+                              return (children <= 0) ? "0px" : "0.2px";
+                          });
+      
+                      groupText.append('rect')
+                          .on("click", click)
+                          .attr("x", "-75px")
+                          .attr("y", "20")
+                          .attr("rx", 4)
+                          .attr("ry", 4)
+                          .attr("width", 150)
+                          .attr("height", 50)
+                          .attr("fill", "#fff")
+                          .attr("class", "rect-children-2")
+                          .style("stroke", "#777")
+                          //.attr("transform", "rotate(2)")
+                          .style("stroke-width", function (d) {
+                              var children = 0;
+                              if (d._children != null) {
+                                  children = d._children.length;
+                              }
+                              return (children <= 0) ? "0px" : "0.2px";
+                          });
+      
+                      // We draw the box with the link bar and with the text of each department
+                      groupText.append('rect')
+                          .attr("class", "bar-links")
+                          .attr("x", "-75px")
+                          .attr("y", "0")
+                          .attr("width", 150)
+                          .attr("height", 20)
+                          .attr("fill", "#2a6ebb")
+                          .attr("stroke", "#ccc")
+                          .attr("stroke-width", "0.2px")
+                          .style("fill", function(d) {
+                              if (d.id == "1") {return "#1951a4"}
+                          ;});
+      
+                      groupText.append('a')
+                          .attr("x", "-50px")
+                          .attr("y", "10")
+                          // .attr("xlink:href", function (d) {
+                          //     return '/directorio?id=' + d.id;
+                          // })
+                          // .attr("xlink:title", "Ver directorio")
+                          .attr("fill", "white")
+                          .attr("height", 20)
+                          .attr("width", 150)
+                          .attr("font-size", 12)
+                          .append('text')
+                          .attr("font-family", "FontAwesome")
+                          .attr("x", "40px")
+                          .attr("y", "15")
+                          .text('\uf055');
+      
+                      groupText.append('a')
+                          .attr("x", "25px")
+                          .attr("y", "10")
+                          // .attr("xlink:href", function (d) {
+                          //     return window.location.href + "&parent_id_chart=" + d.id;
+                          // })
+                          // .attr("xlink:title", "Ver organigrama")
+                          .attr("fill", "white")
+                          .attr("height", 20)
+                          .attr("width", 150)
+                          .attr("font-size", 12)
+                          .append('text')
+                          .attr("font-family", "FontAwesome")
+                          .attr("x", "55px")
+                          .attr("y", "15")
+                          .text('\uf0ab');
+      
+                      groupText.append('rect')
+                          .on("click", click)
+                          .attr("x", "-75px")
+                          .attr("y", "20")
+                          .attr("rx", 4)
+                          .attr("ry", 4)
+                          .attr("width", 150)
+                          .attr("height", 50)
+                          .attr("fill", "white")
+                          .classed("rect-text", true)
+                          .attr("stroke", "#777")
+                          .attr("stroke-width", "0.2px");
+      
+                      groupText.append('text')
+                          .on("click", click)
+                          .text(function (d, i) {
+                              return d.name;
+                          })
+                          .attr("x", "0")
+                          .attr("text-anchor", "middle")
+                          .attr("y", "33")
+                          .attr("font-size", 12)
+                          .attr("fill", "#555")
+                          .call(wrap, 140)
+                          .style("font-weight", function(d) {
+                              if (d.id == "1") {return "bold"}
+                          ;});
+      
+                      var groupLinks = groupNode.append("g").attr("class", "node-links");
+      
+                      /*            groupLinks.append('foreignObject')
+                                      .attr('dx', function(d) { return 2*d.name.length} )
+                                    .attr('y', function(d) { return d.children || d._children ? 0 : 100; })
+                                    .html(function(d,i) { 
+                                  var cuadronode = '<div class="box-node-links"><div class="links-node">'
+                                  +'<a href="/directorio?id='+d.id+'"><i class="fa fa-list-alt"></i></a>'
+                                  +'<a href="<?php echo $_SERVER['REQUEST_URI']; ?>&parent_id_chart='+d.id+'"><i class="fa fa-sitemap"></i></a>'
+                                  +'</div></div>';
+                                      return cuadronode;
+                                  });*/
+      
+                      // Transition nodes to their new position.
+                      var nodeUpdate = node.transition()
+                          .duration(duration)
+                          .attr("transform", function (d) {
+                              return "translate(" + d.x + "," + d.y + ")";
+                          });
+      
+                      nodeUpdate.select("circle")
+                          .attr("r", 4.5)
+                          .style("fill", function(d) {
+                              if (d.parentid == "3181") {return "red"}
+                              else 	{ return "black" }
+                          ;})
+      
+                      nodeUpdate.select("text")
+                          .style("fill-opacity", 1);
+      
+                      // Transition exiting nodes to the parent's new position.
+                      var nodeExit = node.exit().transition()
+                          .duration(duration)
+                          .attr("transform", function (d) {
+                              return "translate(" + source.x + "," + source.y + ")";
+                          })
+                          .remove();
+      
+                      nodeExit.select("circle")
+                          .attr("r", 1e-6);
+      
+                      nodeExit.select("text")
+                          .style("fill-opacity", 1e-6);
+      
+                      // Update the links…
+                      var link = svg.selectAll("path.link")
+                          .data(links, function (d) {
+                              return d.target.id;
+                          });
+      
+                      // Enter any new links at the parent's previous position.
+                      link.enter().insert("path", "g")
+                          .attr("class", "link")
+                          .attr("d", function (d) {
+                              var o = {
+                                  x: source.x0,
+                                  y: source.y0
+                              };
+                              return diagonal({
+                                  source: o,
+                                  target: o
+                              });
+                          })
+                          //.attr("marker-end", "url(#end)");
+      
+                      // Transition links to their new position.
+                      link.transition()
+                          .duration(duration)
+                          .attr("d", diagonal);
+      
+                      // Transition exiting nodes to the parent's new position.
+                      link.exit().transition()
+                          .duration(duration)
+                          .attr("d", function (d) {
+                              var o = {
+                                  x: source.x,
+                                  y: source.y
+                              };
+                              return diagonal({
+                                  source: o,
+                                  target: o
+                              });
+                          })
+                          .remove();
+                      
+                      // Update the link text
+                      var linktext = svg.selectAll("g.link")
+                          .data(links, function (d) {
+                          return d.target.id;
+                      });
+                      
+                      linktext.enter()
+                          .insert("g")
+                          .attr("class", "link")
+                          .append("text")
+                          .attr("x", "0")
+                          .attr("text-anchor", "middle")
+                          .attr("y", ".35em")
+                          .attr("font-size", "12")
+                          .attr("stroke", "red")
+                          .text(function (d) {
+                          //console.log(d.target.name);
+                          return d.target.label;
+                      })
+                      .call(wrap, 100);
+      
+                      // Transition link text to their new positions
+      
+                      linktext.transition()
+                          .duration(duration)
+                          .attr("transform", function (d) {
+                          return "translate(" + ((d.source.x + d.target.x) / 2) + "," + ((d.source.y + d.target.y) / 2) + ")";
+                      })                                                                                                                                                                                                                                                                                                              
+                      //Transition exiting link text to the parent's new position.
+                      linktext.exit().transition()
+                          .remove();
+      
+      
+                      // Stash the old positions for transition.
+                      nodes.forEach(function (d) {
+                          d.x0 = d.x;
+                          d.y0 = d.y;
+                      });
+      
+                      updateEvents();
+                      //d3.selectAll(".node").call(drag);
+      
+                      /*var delay=2000; //1 seconds
+      
+                      setTimeout(function(){
+                        generateImage();
+                      }, delay); */
+                  } //fin update
+      
+                  // Toggle children on click.
+                  function click(d) {
+                      if (d.children) {
+                          d._children = d.children;
+                          d.children = null;
+                      } else {
+                          d.children = d._children;
+                          d._children = null;
+                      }
+                      /*      var node = d3.select(this.parentNode.parentNode);
+                        activo = node.attr("activo");
+                        if (activo == 1){
+                         
+                          //node.moveToBack();
+      
+                          node.attr("activo",0);
+                          node.attr("class","noactivo");
+      
+                          //d3.select(this.parentNode).select("rect").style("fill","#0079c2");
+                        }else{
+                          //node.moveToFront();
+                          node.attr("activo",1);
+                          node.attr("class","activo");
+                          
+                          //d3.select(this.parentNode).select("rect").style("fill","#229be4");
+                            
+                        }
+                        */
+      
+                      update(d);
+      
+                  }
+      
+                  d3.selection.prototype.moveToFront = function () {
+                      return this.each(function () {
+                          //this.parentNode.appendChild(this);
+                          //        this.parentNode.replaceChild(this, this)
+                      });
+                  };
+      
+                  d3.selection.prototype.moveToBack = function () {
+                      return this.each(function () {
+                          var firstChild = this.parentNode.firstChild;
+                          if (firstChild) {
+                              //    this.remove();
+                              //this.parentNode.insertBefore(this, firstChild); 
+                          }
+                      });
+                  };
+      
+                  function redraw(d) {
+                      $(".sliderZoom input").val(d3.event.scale);
+                      /*    $( ".text-node" ).each(function() {
+                            var width = $( this ).outerWidth();
+                            var maximo =  parseInt($(this).css("max-width")); 
+                            var minimo = parseInt($(this).css("min-width"));
+                            if(minimo > width) width=minimo;
+                          var marginLeft = width / 2;
+                            
+                            if(maximo < (width + marginLeft)){
+                              width=maximo;   
+                            }else{
+                              width = width + marginLeft;
+                            }
+                            marginLeft = width / 2;
+                          // set css
+                          //$(this).css('margin-left', -marginLeft).css("width", width);
+      
+                            var position = $(this).offset().top;
+                            if (position < 180){
+                              
+                              $(this).parent().css("opacity",0);
+                            }else{
+                              $(this).parent().css("opacity",1)
+                            }
+      
+      
+                        });
+                      */
+      
+                      /* var delay=2000; //1 seconds
+      
+                       setTimeout(function(){
+                         generateImage();
+                       }, delay); */
+      
+                      var scale = 1;
+                      var d3scale = d3.event.scale;
+                      scale = (d3scale > 1) ? (1.1 / d3scale) : 0.8;
+                      if (d3scale == 1) scale = 1;
+      
+                      d3.selectAll(".texto").attr("transform", "scale(" + scale + ")");
+                      //console.log("here", d3.event.translate, d3.event.scale);
+                      svg.attr("transform",
+                          "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")");
+                  }
+      
+                  // Initialize the display to show a few nodes.
+                  //    root.children.forEach(toggleAll);
+      
+                  root.children.forEach(collapse);
+                  update(root);
+      
+                  d3.select(self.frameElement).style("height", "600px").style("width", width);
+      
+                  /*    $(".box-node-links a").on("click", function(e){
+                        window.location = $(this).attr('href');
+                         //e.preventDefault();
+                         e.stopPropagation();
+                         console.log("link");
+                      });*/
+      
+                  /*    $(".node .texto .box-node-text i.fa-info-circle").on("click", function(e){
+                        var cuadrolinks=$(this).closest("g").parent().find(".box-node-links");
+                        
+                        if(cuadrolinks.is(':visible')){
+                          cuadrolinks.hide()  
+                        }else{
+                          cuadrolinks.show()  
+                        }
+                         e.stopPropagation();
+                         console.log("link2");
+                      });*/
+                  //d3.selectAll(".node").call(drag);
+
+                  // EXpand / Collapse All
+            function expand(d){   
+                var children = (d.children)?d.children:d._children;
+                if (d._children) {        
+                    d.children = d._children;
+                    d._children = null;       
+                }
+                if(children)
+                  children.forEach(expand);
+            }
+
+            function expandAll(){
+                expand(root); 
+                update(root);
+            }
+
+            function collapseAll(){
+                root.children.forEach(collapse);
+                collapse(root);
+                update(root);
+            }
+      
+              });
+          </script>
+        <!-- <div id="loadText">Loading Data</div> -->
+        <header style="float: right; padding: 20px 20px 0 0;">
+            <button class="btn btn-inverse" onclick="expandAll()">Expand All</button>
+            <button class="btn btn-inverse" onclick="collapseAll()">Collapse All</button>
+          </header>
+				<figure class="bp-alg cf">
+          </figure>
+			</div>
+		</div>
+		
+
+		
+	</div>
+		
+	<script>
+		setTimeout(drawAll, 500);
+	</script>
+
+</body>
+</html>
