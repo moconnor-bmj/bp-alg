@@ -1,2 +1,1 @@
-# bp-alg
-BP Algorithm Concept
+# BP Algorithm Concept
